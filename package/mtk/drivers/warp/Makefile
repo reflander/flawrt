@@ -77,7 +77,7 @@ define KernelPackage/warp/install
 		if [ "$$(CONFIG_WARP_NEW_FW)" = "y" ]; then \
 			cp ./files/$$(MT7981_NEW_WOFW_DIR)/7981*WOCPU*_RAM_CODE_release.bin $(1)/lib/firmware/; \
 		else \
-			cp $(PKG_BUILD_DIR)/bin/7981*WOCPU*_RAM_CODE_release.bin $(1)/lib/firmware/; \
+			cp ./files/$$(MT7981_NEW_WOFW_DIR)/7981*WOCPU*_RAM_CODE_release.bin $(1)/lib/firmware/; \
 		fi; \
 	elif [ "$$(CONFIG_WARP_CHIPSET)" = "mt7986" ]; then \
 		if [ "$$(CONFIG_WARP_NEW_FW)" = "y" ]; then \

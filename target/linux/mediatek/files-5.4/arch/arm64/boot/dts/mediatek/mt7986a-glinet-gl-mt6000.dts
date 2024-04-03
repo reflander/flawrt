@@ -23,8 +23,8 @@
 	memory {
 		reg = <0 0x40000000 0 0x10000000>;
 	};
-
-	gpio-keys {
+	
+	       gpio-keys {
  		compatible = "gpio-keys";
 
  		button-reset {
@@ -165,7 +165,7 @@
 		};
 	};
 
-	mdio: mdio-bus {
+		mdio: mdio-bus {
 		#address-cells = <1>;
 		#size-cells = <0>;
  		
@@ -228,6 +228,9 @@
 	};
 };
 
+
+
+
 &xhci {
  	vusb33-supply = <&reg_3p3v>;
  	vbus-supply = <&usb_vbus>;
@@ -237,6 +240,7 @@
 &hnat {
 	mtketh-wan = "eth1";
 	mtketh-lan = "lan";
+	mtketh-ppe-num = <2>;
 	mtketh-max-gmac = <2>;
 	status = "okay";
 };

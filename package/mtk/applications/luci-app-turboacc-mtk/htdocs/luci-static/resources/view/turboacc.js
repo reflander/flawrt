@@ -145,7 +145,7 @@ return view.extend({
 
 				for (var i=0; i<ppe_num; i++) {
 					acc_status.appendChild(E('tr', {}, [
-						E('td', { 'width': '33%' }, `PPE${i} ` + _('Bind Entries')),
+						E('td', { 'width': '33%' }, `PPE${i} ` + _('Bind Entrys')),
 						E('td', {'id': `ppe${i}_entry` },
 						progressbar(ppe_stats[`BIND_PPE${i}`], ppe_stats[`ALL_PPE${i}`]))
 					]));
@@ -239,15 +239,13 @@ return view.extend({
 		o.placeholder = 30;
 		o.depends('fastpath_mh_eth_hnat', '1');
 
-		if (features.hasGMAC2) {
-			o = s.option(form.ListValue, 'fastpath_mh_eth_hnat_ppenum', _('Number of HNAT PPE'),
-				_('Apply this setting after reboot.'));
-			o.rmempty = false;
-			o.value(1);
-			o.value(2);
-			o.default = 1;
-			o.depends('fastpath_mh_eth_hnat', '1');
-		}
+		o = s.option(form.ListValue, 'fastpath_mh_eth_hnat_ppenum', _('Number of HNAT PPE'),
+			_('Apply this setting after reboot.'));
+		o.rmempty = false;
+		o.value(1);
+		o.value(2);
+		o.default = 2;
+		o.depends('fastpath_mh_eth_hnat', '1');
 
 		o = s.option(form.ListValue, 'fullcone', _('Full cone NAT'),
 			_('Full cone NAT (NAT1) can improve gaming performance effectively.'));

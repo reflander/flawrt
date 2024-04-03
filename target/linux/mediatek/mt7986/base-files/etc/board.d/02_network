@@ -27,15 +27,17 @@ mediatek_setup_interfaces()
 	bananapi,bpi-r3mini*)
 		ucidef_set_interfaces_lan_wan "eth0" "eth1"
 		;;
-	netcore,n60 |\
-	ruijie,rg-x60-pro*)
+	netcore,n60|\
+ 	ruijie,rg-x60-pro*)
 		ucidef_set_interfaces_lan_wan "lan0 lan1 lan2 lan3" eth1
 		;;
  	glinet,gl-mt6000)
  		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4 lan5" eth1
  		;;
 	jdcloud,re-cp-03)
-		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4" "eth1"
+		ucidef_set_interfaces_lan_wan "eth0" "eth1"
+		ucidef_add_switch "switch0" \
+			"1:lan" "2:lan" "3:lan" "4:lan" "6u@eth0" 
 		;;
  	tplink,tl-xdr6086)
  		ucidef_set_interfaces_lan_wan "lan1 lan2" eth1
@@ -58,54 +60,54 @@ mediatek_setup_macs()
 	
 	case $board in
 	*netcore,n60*)
-		wifi_mac=$(mtd_get_mac_binary $part_name 4)
-		lan_mac="$(macaddr_add $wifi_mac -1)"
-		wan_mac="$(macaddr_add $wifi_mac -2)"
+	wifi_mac=$(mtd_get_mac_binary $part_name 4)
+	lan_mac="$(macaddr_add $wifi_mac -1)"
+	wan_mac="$(macaddr_add $wifi_mac -2)"
 		;;
 	glinet,gl-mt6000)
  		label_mac=$(mmc_get_mac_binary factory 0x0a)
  		wan_mac=$label_mac
  		lan_mac=$(macaddr_add "$label_mac" 2)
- 		;;
-	ruijie,rg-x60-pro*)
- 		label_mac=$(mtd_get_mac_ascii product_info ethaddr)
- 		wan_mac=$label_mac
- 		lan_mac=$(macaddr_add "$label_mac" 1)
-		local b0dat="$(l1dat if2dat ra0)"
-		local b1dat="$(l1dat if2dat rax0)"
-		if [ -f ${b0dat} ] && ! grep -q "MacAddress=" ${b0dat}; then
-			local b0mac="$(macaddr_add $label_mac 2)"
-			echo "MacAddress=$b0mac" >> ${b0dat}
-		fi
-		if [ -f ${b1dat} ] && ! grep -q "MacAddress=" ${b1dat}; then
-			local b1mac="$(macaddr_add $label_mac 3)"
-			echo "MacAddress=$b1mac" >> ${b1dat}
-		fi
+ 		local wifi_mac="$(macaddr_add $lan_mac 1)"
+		echo "MacAddress=$wifi_mac" >> /etc/wireless/mediatek/mt7986.dbdc.b0.dat
+		wifi_mac="$(macaddr_add $lan_mac 2)"
+		echo "MacAddress=$wifi_mac" >> /etc/wireless/mediatek/mt7986.dbdc.b1.dat
  		;;
 	jdcloud,re-cp-03)
 		wan_mac=$(mmc_get_mac_binary factory 0x2a)
 		lan_mac=$(mmc_get_mac_binary factory 0x24)
 		label_mac=$lan_mac
+		local wifi_mac="$(macaddr_add $lan_mac 1)"
+		echo "MacAddress=$wifi_mac" >> /etc/wireless/mediatek/mt7986.dbdc.b0.dat
+		wifi_mac="$(macaddr_add $lan_mac 2)"
+		echo "MacAddress=$wifi_mac" >> /etc/wireless/mediatek/mt7986.dbdc.b1.dat
 		;;
  	tplink,tl-xdr6086|\
  	tplink,tl-xdr6088)
-		lan_mac=$(mtd_get_mac_binary config 0x1c)
-		wan_mac=$(macaddr_add "$lan_mac" 1)
-		local b0dat="$(l1dat if2dat ra0)"
-		local b1dat="$(l1dat if2dat rax0)"
-		if [ -f ${b0dat} ] && ! grep -q "MacAddress=" ${b0dat}; then
-			local b0mac="$lan_mac"
-			echo "MacAddress=$b0mac" >> ${b0dat}
-		fi
-		if [ -f ${b1dat} ] && ! grep -q "MacAddress=" ${b1dat}; then
-			local b1mac="$(macaddr_add $lan_mac 2)"
-			echo "MacAddress=$b1mac" >> ${b1dat}
-		fi
+ 		wan_mac=$(mtd_get_mac_binary config 0x1c)
+ 		lan_mac=$(macaddr_add "$wan_mac" 1)
+		dd if=/dev/mtd3 of=/lib/firmware/MT7986_iPAiLNA_EEPROM_AX6000.bin
+		dd if=/dev/mtd3 of=/lib/firmware/MT7986_ePAeLNA_EEPROM_AX6000.bin
 		;;
 	xiaomi,redmi-router-ax6000*)
 		wan_mac=$(mtd_get_mac_ascii Bdata ethaddr_wan)
 		lan_mac=$(mtd_get_mac_ascii Bdata ethaddr)
+		dd if=/dev/mtd4 of=/lib/firmware/MT7986_iPAiLNA_EEPROM_AX6000.bin
+		dd if=/dev/mtd4 of=/lib/firmware/MT7986_ePAeLNA_EEPROM_AX6000.bin
 		;;
+	ruijie,rg-x60-pro*)
+ 		label_mac=$(mtd_get_mac_ascii product_info ethaddr)
+ 		wan_mac=$label_mac
+ 		lan_mac=$(macaddr_add "$label_mac" 1)
+ 		local wifi_mac="$(macaddr_add $label_mac 2)"
+		sed -i '/MacAddress=$wifi_mac/d' /etc/wireless/mediatek/mt7986.dbdc.b0.dat
+		echo "MacAddress=$wifi_mac" >> /etc/wireless/mediatek/mt7986.dbdc.b0.dat
+		wifi_mac="$(macaddr_add $label_mac 3)"
+		sed -i '/MacAddress=$wifi_mac/d' /etc/wireless/mediatek/mt7986.dbdc.b1.dat
+		echo "MacAddress=$wifi_mac" >> /etc/wireless/mediatek/mt7986.dbdc.b1.dat
+		dd if=/dev/mtd3 of=/lib/firmware/MT7986_iPAiLNA_EEPROM_AX6000.bin
+		dd if=/dev/mtd3 of=/lib/firmware/MT7986_ePAeLNA_EEPROM_AX6000.bin
+ 		;;
 	*)
 		lan_mac=$(mtd_get_mac_binary "Factory" "0x2A")
 		wan_mac=$(mtd_get_mac_binary "Factory" "0x24")

@@ -8,7 +8,7 @@ include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=mt_wifi
 
-MT7981_FW_DIR := mt7981-fw-20230306
+MT7981_FW_DIR := mt7981-fw-20230330
 MT7986_FW_DIR := mt7986-fw-20230808
 
 ifeq ($(CONFIG_MTK_CHIP_MT7981),y)
@@ -297,13 +297,6 @@ endef
 
 define KernelPackage/mt_wifi/config
 	source "$(SOURCE)/config.in"
-endef
-
-define FIXUP_NEW_MCU_FW_API
-	@if [ "$$(CONFIG_MTK_MT7981_NEW_FW)" = "y" ] || [ "$$(CONFIG_MTK_MT7986_NEW_FW)" = "y" ]; then \
-		echo "Fixup new mcu fw API"; \
-		patch -p1 -d $(PKG_BUILD_DIR) < ./files/fix-new-mcu-fw-api.patch; \
-	fi
 endef
 
 Hooks/Prepare/Post := FIXUP_NEW_MCU_FW_API

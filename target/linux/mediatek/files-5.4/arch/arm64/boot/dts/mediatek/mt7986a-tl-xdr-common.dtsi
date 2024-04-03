@@ -119,6 +119,7 @@
 	mtketh-wan = "eth1";
 	mtketh-lan = "lan";
 	mtketh-max-gmac = <2>;
+	mtketh-ppe-num = <2>;
 	status = "okay";
 };
 
@@ -190,6 +191,7 @@
 	status = "okay";
 };
 
+
 &spi0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&spi_flash_pins>;
@@ -255,6 +257,8 @@
 	pinctrl-1 = <&wf_dbdc_pins>;
 */
 };
+
+
 
 &watchdog {
 	status = "okay";
