@@ -1,7 +1,7 @@
 此项目源于ImmortalWrt，源代码来自
 https://github.com/hanwckf/immortalwrt-mt798x.git
 ## 设置
-默认IP: http://192.168.1.1 or http://immortalwrt.lan 
+默认IP: http://192.168.1.7 or http://immortalwrt.lan 
 
 用户名: root
 密码: none
