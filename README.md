@@ -84,6 +84,11 @@ https://github.com/hanwckf/immortalwrt-mt798x.git
    make V=s -j$(nproc)
   ```
   
+## 编译其他相关
+- 清除全部构建环境、回复到源代码状态
+```bash
+make distclean
+```
 
 ## 相关存储库
 
