@@ -69,6 +69,10 @@ https://github.com/hanwckf/immortalwrt-mt798x.git
     
     # MT7986 256M Low Memory
     cp -f defconfig/mt7986-ax6000-256m.config .config
+    
+    # x86
+    cp -f defconfig/x86.config .config
+    
     ``` 
      
   6. 选择您偏好的工具链、目标系统和固件包的配置
