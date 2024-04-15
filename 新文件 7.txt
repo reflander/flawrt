@@ -1,11 +1,1 @@
-[core]
-	repositoryformatversion = 0
-	filemode = true
-	bare = false
-	logallrefupdates = true
-[remote "origin"]
-	url = git@github.com:reflander/flawrt.git
-	fetch = +refs/heads/*:refs/remotes/origin/*
-[branch "openwrt-23.05"]
-	remote = origin
-	merge = refs/heads/openwrt-23.05
+
