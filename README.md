@@ -1,4 +1,5 @@
 2024年4月15日构建多分支
+可以编译7981芯片的路由器
 此项目源于ImmortalWrt，源代码来自
 https://github.com/hanwckf/immortalwrt-mt798x.git
 ## 设置
