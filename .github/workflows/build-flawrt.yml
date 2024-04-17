@@ -2,6 +2,7 @@
 name: Build flawrt
 
 on: 
+#手动触发编译
   workflow_dispatch:
   release:
     types: [published]
